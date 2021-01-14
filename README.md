@@ -13,14 +13,13 @@ kubectl delete -f ./pipeline-account.yaml
 kubectl apply -f ./resources/picalc-git.yaml
 kubectl delete -f ./resources/picalc-git.yaml
 
-kubectl apply -f ./tasks/deploy-using-kubectl.yaml  
 kubectl apply -f ./tasks/source-to-image.yaml
+kubectl apply -f ./tasks/deploy-using-kubectl.yaml  
 kubectl apply -f ./pipeline/build-and-deploy-pipeline.yaml
 kubectl apply -f ./run/picalc-pipeline-run.yaml
 
-kubectl delete -f ./tasks/deploy-using-kubectl.yaml  
 kubectl delete -f ./tasks/source-to-image.yaml
-kubectl delete -f ./run/picalc-pipeline-run.yaml
+kubectl delete -f ./tasks/deploy-using-kubectl.yaml  
 kubectl delete -f ./pipeline/build-and-deploy-pipeline.yaml
-
+kubectl delete -f ./run/picalc-pipeline-run.yaml
 ```
