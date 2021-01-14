@@ -1,0 +1,21 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: to-harbor
+  namespace: default
+spec: 
+  taskRef:
+    name: source-to-image
+  resources:
+    inputs:
+      - name: git-source
+        resourceRef:
+          name: tekton-knative-git
+  params:
+    - name: pathToContext
+      value: "src"
+    - name: imageUrl
+      value: "192.168.199.205:80/knative-app/tekton-knative-helloworld"
+    - name: imageTag
+      value: "latest"
+  serviceAccountName: pipeline-account
