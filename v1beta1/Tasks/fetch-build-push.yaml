@@ -59,6 +59,3 @@ spec:
       env:
         - name: DOCKER_CONFIG
           value: /builder/home/.docker
-  workspaces:
-    - name: minio-secret
-      mountPath: /minio-secret

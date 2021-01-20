@@ -15,7 +15,7 @@ spec:
     - name: bucket
       value: src
     - name: filename
-      value: hellowolrd-go.zip
+      value: helloworld-go.zip
     - name: pathToContext
       value: src
     - name: imageUrl
