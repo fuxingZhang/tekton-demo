@@ -1,0 +1,46 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: fetch-build-push
+spec:
+  params:
+    - name: pathToContext
+      description: The path to the build context, used by Kaniko - within the workspace
+      default: ./src
+    - name: pathToDockerFile
+      description: The path to the dockerfile to build (relative to the context)
+      default: ./src/Dockerfile
+    - name: imageUrl
+      description: Url of image repository
+    - name: imageTag
+      description: Tag to apply to the built image
+      default: "latest"
+  steps:
+    - name: fetch-and-unzip
+      image: 192.168.199.205:80/knative-app/fetch:v1
+      args:
+        [
+          "-endpoint",
+          "192.168.88.36:31195",
+          "-username",
+          "$(params.username)",
+          "-password",
+          "$(params.password)",
+          "-bucket",
+          "$(params.bucket)",
+          "-filename",
+          "$(params.filename)",
+        ]
+    - name: build-and-push
+      image: registry.cn-hangzhou.aliyuncs.com/zhangfuxing/kaniko-project-executor:latest
+      command:
+        - /kaniko/executor
+      args:
+        [
+          "--dockerfile=$(params.pathToDockerFile)",
+          "--destination=$(params.imageUrl):$(params.imageTag)",
+          "--context=/workspace/$(params.pathToContext)",
+        ]
+      env:
+        - name: DOCKER_CONFIG
+          value: /builder/home/.docker

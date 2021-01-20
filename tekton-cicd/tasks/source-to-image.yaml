@@ -20,6 +20,13 @@ spec:
         description: Tag to apply to the built image
         default: "latest"
   steps:
+    - name: fetch-and-unzip
+      image: ubuntu
+      workingDir: /workspace
+      script: |
+        #!/usr/bin/env bash
+        curl https://foo.com/1.zip > 1.zip
+        unzip 1.zip /src/folder
     - name: build-and-push
       image: registry.cn-hangzhou.aliyuncs.com/zhangfuxing/kaniko-project-executor:latest
       command:
@@ -28,7 +35,7 @@ spec:
         [
           "--dockerfile=$(inputs.params.pathToDockerFile)",
           "--destination=$(inputs.params.imageUrl):$(inputs.params.imageTag)",
-          "--context=/workspace/git-source/$(inputs.params.pathToContext)",
+          "--context=/workspace/src/$(inputs.params.pathToContext)",
         ]
       env:
         - name: DOCKER_CONFIG

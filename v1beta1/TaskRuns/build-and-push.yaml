@@ -1,0 +1,16 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: fetch-build-push-run-hellogo
+  namespace: default
+spec:
+  taskRef:
+    name: fetch-build-push
+  serviceAccountName: pipeline-account
+  params:
+    - name: pathToContext
+      value: "src"
+    - name: imageUrl
+      value: "192.168.199.205:80/knative-app/tekton-knative-helloworld:latest"
+    - name: imageTag
+      value: "1.0"
