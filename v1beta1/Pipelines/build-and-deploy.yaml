@@ -2,6 +2,7 @@ apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
   name: build-and-deploy-pipeline
+  namespace: knative-app
 spec:
   params:
     - name: endpoint
@@ -23,7 +24,10 @@ spec:
       default: src
     - name: pathToDockerFile
       description: The path to the dockerfile to build (relative to the context)
-      default: src/Dockerfile
+      default: Dockerfile
+    - name: pathToYamlFile
+      description: The path to the yaml file to deploy within the workspace
+      default: service.yaml
     - name: imageUrl
       description: Url of image repository
     - name: imageTag
@@ -48,11 +52,13 @@ spec:
           value: "$(params.filename)"
         - name: pathToContext
           value: "$(params.pathToContext)"
+        - name: pathToDockerFile
+          value: "$(params.pathToDockerFile)"
         - name: imageUrl
           value: "$(params.imageUrl)"
         - name: imageTag
           value: "$(params.imageTag)"
-    - name: deploy-to-cluster
+    - name: deploy-using-kubectl
       taskRef:
         name: deploy-using-kubectl
       runAfter:

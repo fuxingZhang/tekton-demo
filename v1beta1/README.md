@@ -16,10 +16,12 @@ kubectl delete -f ./pipeline-account.yaml
 
 # Tasks
 kubectl create -f ./Tasks/fetch-build-push.yaml
+kubectl create -f ./Tasks/fetch-build-push2.yaml
 kubectl create -f ./Tasks/deploy-using-kubectl.yaml  
 
 # TaskRuns
 kubectl create -f ./TaskRuns/fetch-build-push.yaml
+kubectl create -f ./TaskRuns/fetch-build-push2.yaml
 kubectl create -f ./TaskRuns/deploy-using-kubectl.yaml
 
 # Pipelines
@@ -33,4 +35,9 @@ kubectl delete -f ./Tasks/fetch-build-push.yaml
 kubectl delete -f ./Tasks/deploy-using-kubectl.yaml  
 kubectl delete -f ./Pipelines/build-and-deploy.yaml
 kubectl delete -f ./PipelineRuns/build-and-deploy.yaml
+```
+
+## tar
+```bash
+tar -C ./helloworld-go -zcvf helloworld-go.tar.gz .
 ```

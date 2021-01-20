@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: fetch-build-push
+  name: fetch-build-push2
   namespace: knative-app
 spec:
   params:
@@ -31,23 +31,6 @@ spec:
       description: Tag to apply to the built image
       default: latest
   steps:
-    - name: fetch-and-unzip
-      image: 192.168.199.205:80/knative-app/fetch:v1
-      args:
-        [
-          "-endpoint",
-          "$(params.endpoint)",
-          "-username",
-          "$(params.username)",
-          "-password",
-          "$(params.password)",
-          "-bucket",
-          "$(params.bucket)",
-          "-filename",
-          "$(params.filename)",
-          "-dest",
-          "$(params.pathToContext)"
-        ]
     - name: build-and-push
       image: registry.cn-hangzhou.aliyuncs.com/zhangfuxing/kaniko-project-executor:latest
       command:
@@ -56,8 +39,18 @@ spec:
         [
           "--dockerfile=$(params.pathToDockerFile)",
           "--destination=$(params.imageUrl):$(params.imageTag)",
-          "--context=/workspace/$(params.pathToContext)",
+          "--context=s3://$(params.bucket)/$(params.filename)",
         ]
       env:
         - name: DOCKER_CONFIG
           value: /builder/home/.docker
+        - name: AWS_ACCESS_KEY_ID
+          value: "$(params.username)"
+        - name: AWS_SECRET_ACCESS_KEY
+          value: "$(params.password)"
+        - name: AWS_REGION
+          value: us-east-1
+        - name: S3_ENDPOINT
+          value: "$(params.endpoint)"
+        - name: S3_FORCE_PATH_STYLE
+          value: "true"

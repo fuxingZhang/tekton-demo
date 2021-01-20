@@ -6,12 +6,13 @@ metadata:
 spec:
   params:
     - name: pathToYamlFile
-      description: The path to the yaml file to deploy within the git source
+      description: The path to the yaml file to deploy within the workspace
+      default: service.yaml
     - name: imageUrl
       description: Url of image repository
     - name: imageTag
       description: Tag of the images to be used.
-      default: "latest"
+      default: latest
   steps:
     - name: update-yaml
       image: alpine
@@ -19,12 +20,12 @@ spec:
       args:
         - "-i"
         - "-e"
-        - "s;__IMAGE__;$(inputs.params.imageUrl):$(inputs.params.imageTag);g"
-        - "/workspace/$(inputs.params.pathToYamlFile)"
+        - "s;__IMAGE__;$(params.imageUrl):$(params.imageTag);g"
+        - "/workspace/$(params.pathToYamlFile)"
     - name: run-kubectl
       image: registry.cn-hangzhou.aliyuncs.com/knative-sample/kubectl:v0.5.0
       command: ["kubectl"]
       args:
         - "apply"
         - "-f"
-        - "/workspace/$(inputs.params.pathToYamlFile)"
+        - "/workspace/$(params.pathToYamlFile)"

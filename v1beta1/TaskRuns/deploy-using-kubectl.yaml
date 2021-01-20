@@ -9,8 +9,8 @@ spec:
     name: deploy-using-kubectl
   serviceAccountName: pipeline-account
   params:
-    - name: pathToContext
-      value: "src"
+    - name: pathToYamlFile
+      value: "src/service.yaml"
     - name: imageUrl
       value: "192.168.199.205:80/knative-app/tekton-knative-helloworld"
     - name: imageTag
