@@ -2,6 +2,7 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   name: fetch-build-push
+  namespace: knative-app
 spec:
   params:
     - name: endpoint
