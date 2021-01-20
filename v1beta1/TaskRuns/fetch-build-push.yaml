@@ -2,6 +2,7 @@ apiVersion: tekton.dev/v1beta1
 kind: TaskRun
 metadata:
   name: fetch-build-push-run-hellogo
+  # generateName: fetch-build-push-run-hellogo-
   namespace: knative-app
 spec:
   taskRef:
