@@ -45,6 +45,8 @@ spec:
           "$(params.bucket)",
           "-filename",
           "$(params.filename)",
+          "-dest",
+          "$(params.pathToContext)"
         ]
     - name: build-and-push
       image: registry.cn-hangzhou.aliyuncs.com/zhangfuxing/kaniko-project-executor:latest
