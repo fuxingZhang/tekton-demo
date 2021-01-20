@@ -4,7 +4,10 @@ tekton knative auto deploy demo
 ```bash
 # secret 
 kubectl create -f ./image-secret.yaml
+kubectl create -f ./minio-secret.yaml
 kubectl delete -f ./image-secret.yaml
+kubectl delete -f ./minio-secret.yaml
+
 # account
 kubectl create -f ./pipeline-account.yaml
 kubectl delete -f ./pipeline-account.yaml

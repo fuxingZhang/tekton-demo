@@ -1,0 +1,25 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: build-and-deploy-pipeline-run
+spec:
+  pipelineRef:
+    name: build-and-deploy-pipeline
+  params:
+    - name: endpoint
+      value: 192.168.88.36:31195
+    - name: username
+      value: admin
+    - name: password
+      value: Esri@123
+    - name: bucket
+      value: src
+    - name: filename
+      value: hellowolrd-go.zip
+    - name: pathToContext
+      value: src
+    - name: imageUrl
+      value: 192.168.199.205:80/knative-app/tekton-knative-helloworld
+    - name: imageTag
+      value: latest
+  serviceAccountName: pipeline-account

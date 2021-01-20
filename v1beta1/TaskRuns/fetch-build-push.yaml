@@ -1,0 +1,26 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: fetch-build-push-run-hellogo
+  namespace: knative-app
+spec:
+  taskRef:
+    name: fetch-build-push
+  serviceAccountName: pipeline-account
+  params:
+    - name: endpoint
+      value: 192.168.88.36:31195
+    - name: username
+      value: admin
+    - name: password
+      value: Esri@123
+    - name: bucket
+      value: src
+    - name: filename
+      value: hellowolrd-go.zip
+    - name: pathToContext
+      value: src
+    - name: imageUrl
+      value: 192.168.199.205:80/knative-app/tekton-knative-helloworld
+    - name: imageTag
+      value: latest

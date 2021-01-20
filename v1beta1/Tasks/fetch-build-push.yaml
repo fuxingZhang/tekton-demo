@@ -4,24 +4,38 @@ metadata:
   name: fetch-build-push
 spec:
   params:
+    - name: endpoint
+      description: minio endpoint
+      default: 192.168.88.36:31195
+    - name: username
+      description: minio key
+      default: admin
+    - name: password
+      description: minio secret
+      default: Esri@123
+    - name: bucket
+      description: minio bucket
+      default: src
+    - name: filename
+      description: zip filename
     - name: pathToContext
       description: The path to the build context, used by Kaniko - within the workspace
-      default: ./src
+      default: src
     - name: pathToDockerFile
       description: The path to the dockerfile to build (relative to the context)
-      default: ./src/Dockerfile
+      default: src/Dockerfile
     - name: imageUrl
       description: Url of image repository
     - name: imageTag
       description: Tag to apply to the built image
-      default: "latest"
+      default: latest
   steps:
     - name: fetch-and-unzip
       image: 192.168.199.205:80/knative-app/fetch:v1
       args:
         [
           "-endpoint",
-          "192.168.88.36:31195",
+          "$(params.endpoint)",
           "-username",
           "$(params.username)",
           "-password",
@@ -44,3 +58,6 @@ spec:
       env:
         - name: DOCKER_CONFIG
           value: /builder/home/.docker
+  workspaces:
+    - name: minio-secret
+      mountPath: /minio-secret
