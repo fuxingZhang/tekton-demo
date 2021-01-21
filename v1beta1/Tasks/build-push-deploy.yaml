@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: deploy-using-kubectl
+  name: build-push-deploy
   namespace: knative-app
 spec:
   params:
@@ -22,14 +22,17 @@ spec:
     - name: pathToContext
       description: The path to the build context, used by Kaniko - within the workspace
       default: src
-    - name: pathToYamlFile
-      description: The path to the yaml file to deploy within the workspace
-      default: service.yaml
+    - name: pathToDockerFile
+      description: The path to the dockerfile to build (relative to the context)
+      default: Dockerfile
     - name: imageUrl
       description: Url of image repository
     - name: imageTag
-      description: Tag of the images to be used.
+      description: Tag to apply to the built image
       default: latest
+    - name: pathToYamlFile
+      description: The path to the yaml file to deploy within the workspace
+      default: service.yaml
   steps:
     - name: fetch-and-unzip
       image: 192.168.199.205:80/knative-app/fetch:v1
@@ -48,6 +51,19 @@ spec:
           "-dest",
           "$(params.pathToContext)",
         ]
+    - name: build-and-push
+      image: registry.cn-hangzhou.aliyuncs.com/zhangfuxing/kaniko-project-executor:latest
+      command:
+        - /kaniko/executor
+      args:
+        [
+          "--dockerfile=$(params.pathToDockerFile)",
+          "--destination=$(params.imageUrl):$(params.imageTag)",
+          "--context=/workspace/$(params.pathToContext)",
+        ]
+      env:
+        - name: DOCKER_CONFIG
+          value: /builder/home/.docker
     - name: update-yaml
       image: alpine
       command: ["sed"]

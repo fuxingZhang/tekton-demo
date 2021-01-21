@@ -64,6 +64,20 @@ spec:
       runAfter:
         - fetch-build-push
       params:
+        - name: endpoint
+          value: "$(params.endpoint)"
+        - name: username
+          value: "$(params.username)"
+        - name: password
+          value: "$(params.password)"
+        - name: bucket
+          value: "$(params.bucket)"
+        - name: filename
+          value: "$(params.filename)"
+        - name: filename
+          value: "$(params.filename)"
+        - name: pathToContext
+          value: "$(params.pathToContext)"
         - name: pathToYamlFile
           value: "$(params.pathToYamlFile)"
         - name: imageUrl

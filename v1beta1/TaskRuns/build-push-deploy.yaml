@@ -1,12 +1,12 @@
 apiVersion: tekton.dev/v1beta1
 kind: TaskRun
 metadata:
-  name: deploy-using-kubectl-run-hellogo
-  # generateName: deploy-using-kubectl-run-hellogo-
+  # name: build-push-deploy-run-helloworld-go
+  generateName: build-push-deploy-
   namespace: knative-app
 spec:
   taskRef:
-    name: deploy-using-kubectl
+    name: build-push-deploy
   serviceAccountName: pipeline-account
   params:
     - name: endpoint
@@ -21,9 +21,9 @@ spec:
       value: helloworld-go.zip
     - name: pathToContext
       value: src
+    - name: imageUrl
+      value: 192.168.199.205:80/knative-app/tekton-knative-helloworld
+    - name: imageTag
+      value: latest
     - name: pathToYamlFile
       value: "src/service.yaml"
-    - name: imageUrl
-      value: "192.168.199.205:80/knative-app/tekton-knative-helloworld"
-    - name: imageTag
-      value: "latest"

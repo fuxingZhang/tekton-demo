@@ -1,6 +1,12 @@
 # tekton-knative
 tekton knative auto deploy demo
 
+## before
+```bash
+kn service delete helloworld-go -n knative-app
+```
+
+## run
 ```bash
 # image secret 
 kubectl create -f ./image-secret.yaml
@@ -14,14 +20,20 @@ kubectl delete -f ./minio-secret.yaml
 kubectl create -f ./pipeline-account.yaml
 kubectl delete -f ./pipeline-account.yaml
 
+# use one task
+kubectl create -f ./Tasks/build-push-deploy.yaml 
+kubectl create -f ./TaskRuns/build-push-deploy.yaml  
+
+# use tar.gz
+kubectl create -f ./Tasks/fetch-build-push2.yaml
+kubectl create -f ./TaskRuns/fetch-build-push2.yaml
+
 # Tasks
 kubectl create -f ./Tasks/fetch-build-push.yaml
-kubectl create -f ./Tasks/fetch-build-push2.yaml
 kubectl create -f ./Tasks/deploy-using-kubectl.yaml  
-
+ 
 # TaskRuns
 kubectl create -f ./TaskRuns/fetch-build-push.yaml
-kubectl create -f ./TaskRuns/fetch-build-push2.yaml
 kubectl create -f ./TaskRuns/deploy-using-kubectl.yaml
 
 # Pipelines
