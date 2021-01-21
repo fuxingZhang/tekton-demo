@@ -57,8 +57,8 @@ spec:
         - "s;__IMAGE__;$(params.imageUrl):$(params.imageTag);g"
         - "/workspace/$(params.pathToYamlFile)"
     - name: run-kubectl
-      image: 192.168.199.205:80/knative-app/kubectl:0.5.0
-      command: ["kubectl"]
+      image: registry.cn-hangzhou.aliyuncs.com/zhangfuxing/kubectl:v1.20.2
+      command: ["/usr/local/bin/kubectl"]
       args:
         - "apply"
         - "-f"
